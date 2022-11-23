@@ -5,8 +5,8 @@ import axios from "axios";
 
 function App() {
   const [data, setData] = useState({ hits: [] });
- //const [query, setQuery] = useState('redux');
-  const [search, setSearch] = useState('redux');
+  const [query, setQuery] = useState('redux');
+  // const [search, setSearch] = useState('redux');
   const [url, setUrl] = useState(
     'https://hn.algolia.com/api/v1/search?query=redux',
   );
@@ -15,23 +15,34 @@ function App() {
     const fetchData = async () => {
       const result = await axios(
         // `http://hn.algolia.com/api/v1/search?query=${query}`,
-        `http://hn.algolia.com/api/v1/search?query=${search}`,
+        // `http://hn.algolia.com/api/v1/search?query=${search}`,
+        url
       );
       setData(result.data);
     };
 
     fetchData();
   // }, [query]);
-  }, [search]);
+  }, [url]);
 
  return (
     <Fragment>
       <input
         type="text"
-        value={search}
-        onChange={event => setSearch(event.target.value)}
+        value={query}
+        // onChange={event => setSearch(event.target.value)}
+        onChange={event => setQuery(event.target.value)}
       />
       
+      <button
+        type="button"
+        onClick={() =>
+          setUrl(`http://hn.algolia.com/api/v1/search?query=${query}`)
+        }
+      >
+        Search
+      </button>
+
       <ul>
         {data.hits.map(item => (
           <li key={item.objectID}>
